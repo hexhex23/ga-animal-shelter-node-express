@@ -25,6 +25,7 @@ app.use(function noCacheForRoot(req, res, next) {
     next();
 });
 
+app.use(express.static('public'));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));

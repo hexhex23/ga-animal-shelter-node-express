@@ -12,6 +12,11 @@ animalSchema.methods.sayHello = function() {
   return 'Hello ' + this.Name;
 }
 
+animalSchema.methods.formatDate = function() {
+  date = new Date(this.dob);
+  return date.toDateString();
+}
+
 animalSchema.methods.linkName = function() {
   if (this.status==='orphan') {
   return 'adopt';

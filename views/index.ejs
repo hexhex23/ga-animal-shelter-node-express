@@ -1,5 +1,4 @@
-index
-
+<h2>Add an animal</h2>
 <form id='add_animal' action ='/animals' method='post'>
   <input type='text' name='name' placeholder='name'>
   <input type='text' name='breed' placeholder='breed'>
@@ -11,14 +10,16 @@ index
 
 
 <% animals.forEach(function(animal, index){ %>
+  <div class='animal-container'>
     <p>
-      Name: <%=animal.name%><br>
+      <span class='field'>Name: </span><%=animal.name%><br>
       Breed: <%=animal.breed%><br>
-      DOB: <%=animal.dob%><br>
-      Gender: <%=animal.gender%><br>
-      Family: <%=animal.family%><br>
-      Status: <%=animal.status%><br>
+      <span class='field'>DOB: </span><%=animal.formatDate()%><br>
+      <span class='field'>Gender: </span><%=animal.gender%><br>
+      <span class='field'>Family: </span><%=animal.family%><br>
+      <span class='field'>Status: </span><%=animal.status%><br>
+      <%- link_to(animal.linkName(), '/animals/'+ animal.id + '/' + animal.linkName()) %> 
     </p>
-
-    <%- link_to(animal.linkName(), '/animals/'+ animal.id + '/' + animal.linkName()) %> 
+  </div>
 <% }) %>
+  
