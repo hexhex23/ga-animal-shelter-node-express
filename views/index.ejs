@@ -3,5 +3,5 @@ index
 <% animals.forEach(function(animal, index){ %>
     <p><%=animal.name%></p>
 
-    <%- link_to(animal.linkName(), '/animals/'+ animal.id +'/abandon') %> 
+    <%- link_to(animal.linkName(), '/animals/'+ animal.id + '/' + animal.linkName()) %> 
 <% }) %>

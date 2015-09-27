@@ -15,6 +15,16 @@ var Animal = require('./models/animals')
 var moongoose = require('mongoose');
 moongoose.connect('mongodb://localhost/animalshelter');
 
+//middleware to refresh page on reload
+app.use(function noCacheForRoot(req, res, next) {
+    if (req.url === '/animals') {
+      res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.header("Pragma", "no-cache");
+      res.header("Expires", 0);
+    }
+    next();
+});
+
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
@@ -24,28 +34,27 @@ app.set('view engine', 'ejs');
 helpers(app);
 
 
+var bobo = Animal({
+  name: 'Bobo',
+  breed: 'yorkshire terrier',
+  status: 'orphan'
+});
 
-  var bobo = Animal({
-    name: 'Bobo',
-    breed: 'yorkshire terrier',
-    status: 'orphan'
-  });
+var dobo = Animal({
+  name: 'Dobo',
+  breed: 'alsatian',
+  status: 'adopted'
+});
 
-  var dobo = Animal({
-    name: 'Dobo',
-    breed: 'alsatian',
-    status: 'adopted'
-  });
+bobo.save(function(err, animal) {
+if (err) console.log(err);
+console.log('Animal ' + animal.name + ' has been created');
+});
 
-  bobo.save(function(err, animal) {
+dobo.save(function(err, animal) {
   if (err) console.log(err);
   console.log('Animal ' + animal.name + ' has been created');
-  });
-
-  dobo.save(function(err, animal) {
-    if (err) console.log(err);
-    console.log('Animal ' + animal.name + ' has been created');
-  });
+});
 
 var allAnimals;
 
@@ -81,15 +90,26 @@ app.get('/animals/:id/abandon', function(req, res){
       if (err) console.log(err);
       console.log (animal.name + 'is now' + animal.status);
       abandonedAnimal=animal;
-        console.log (abandonedAnimal.status)
+      res.redirect('/animals')
+      })
+ 
+});
 
+//ADOPT
+
+app.get('/animals/:id/adopt', function(req, res){
+
+  var adoptedAnimal;
+  var id = req.params.id;
+  Animal.findByIdAndUpdate(id, { status: 'adopted' }, {new:true}, function(err, animal) {
+      if (err) console.log(err);
+      console.log (animal.name + 'is now ' + animal.status);
+      adoptedAnimal=animal;
       })
   res.render('index.ejs', {
     animals: allAnimals
   });
 });
-  // res.send(animals)
-  //res.json(animals)
   
 
 
