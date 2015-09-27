@@ -33,31 +33,72 @@ app.engine('ejs', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 helpers(app);
 
+Animal.remove({}, function(){
 
-var bobo = Animal({
-  name: 'Bobo',
-  breed: 'yorkshire terrier',
-  status: 'orphan'
-});
+  var bobo = Animal({
+    name: 'Bobo',
+    breed: 'yorkshire terrier',
+    dob: 1977-09-13,
+    gender:'male',
+    family:'smith',
+    status: 'orphan'
+  });
 
-var dobo = Animal({
-  name: 'Dobo',
-  breed: 'alsatian',
-  status: 'adopted'
-});
+  var booboo = Animal({
+    name: 'Booboo',
+    breed: 'alsatian',
+    dob: 1977-09-13,
+    gender:'male',
+    family:'smith',
+    status: 'orphan'
+  });
 
-bobo.save(function(err, animal) {
-if (err) console.log(err);
-console.log('Animal ' + animal.name + ' has been created');
-});
+  var beatrice = Animal({
+    name: 'Beatrice',
+    breed: 'poodle',
+    dob: 1977-09-13,
+    gender:'male',
+    family:'smith',
+    status: 'orphan'
+  });
 
-dobo.save(function(err, animal) {
+  var benji = Animal({
+    name: 'Benji',
+    breed: 'mongrel',
+    dob: 1977-09-13,
+    gender:'male',
+    family:'smith',
+    status: 'adopted'
+  });
+
+  bobo.save(function(err, animal) {
   if (err) console.log(err);
   console.log('Animal ' + animal.name + ' has been created');
+  });
+
+  booboo.save(function(err, animal) {
+    if (err) console.log(err);
+    console.log('Animal ' + animal.name + ' has been created');
+  });
+
+  beatrice.save(function(err, animal) {
+  if (err) console.log(err);
+  console.log('Animal ' + animal.name + ' has been created');
+  });
+
+  benji.save(function(err, animal) {
+    if (err) console.log(err);
+    console.log('Animal ' + animal.name + ' has been created');
+  });
+
 });
 
 var allAnimals;
 
+//ROOT
+app.get('/', function(req, res){
+  res.redirect('/animals')
+})
 
 //INDEX
 app.get('/animals', function(req, res){
@@ -66,16 +107,38 @@ app.get('/animals', function(req, res){
     if (err) console.log(err);
     allAnimals = animals;
     console.log('allAnimals = ' + animals)
+    res.render('index.ejs', {
+      animals: allAnimals
+      });
     });
-  res.render('index.ejs', {
-    animals: allAnimals
-  });
-
 })
 
 //SHOW
-//NEW
+// //NEW
+// app.get('/animals/new', function(req, res) {
+//   res.render('new.ejs')
+//   });
+
 //CREATE
+app.post('/animals', function(req, res) {
+  console.log('hit create route')
+  console.log(req.body)
+
+  Animal.create(req.body, function (err, animal) {
+  if (err) console.log(err);
+  console.log(animal.name + ' created')
+  animal.save(function(err,animal,numberAffected){
+    if(err) console.log(err);
+    console.log(animal.name+' saved. Number affected: '+ numberAffected)
+  })
+  res.redirect('/animals')
+  });
+
+  
+});
+
+
+
 //EDIT
 //UPDATE
 //ADOPT
@@ -105,10 +168,8 @@ app.get('/animals/:id/adopt', function(req, res){
       if (err) console.log(err);
       console.log (animal.name + 'is now ' + animal.status);
       adoptedAnimal=animal;
+      res.redirect('/animals')
       })
-  res.render('index.ejs', {
-    animals: allAnimals
-  });
 });
   
 

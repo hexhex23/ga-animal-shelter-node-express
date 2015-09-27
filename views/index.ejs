@@ -1,7 +1,24 @@
 index
 
+<form id='add_animal' action ='/animals' method='post'>
+  <input type='text' name='name' placeholder='name'>
+  <input type='text' name='breed' placeholder='breed'>
+  <input type="date" name="dob">
+  <input type='text' name='gender' placeholder='gender'>
+  <input type='text' name='status' placeholder='status (orphan or adopted'>
+  <input type='submit'>
+</form>
+
+
 <% animals.forEach(function(animal, index){ %>
-    <p><%=animal.name%></p>
+    <p>
+      Name: <%=animal.name%><br>
+      Breed: <%=animal.breed%><br>
+      DOB: <%=animal.dob%><br>
+      Gender: <%=animal.gender%><br>
+      Family: <%=animal.family%><br>
+      Status: <%=animal.status%><br>
+    </p>
 
     <%- link_to(animal.linkName(), '/animals/'+ animal.id + '/' + animal.linkName()) %> 
 <% }) %>
