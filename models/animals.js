@@ -8,6 +8,18 @@ var animalSchema = new mongoose.Schema({
    status: String
 })
 
+animalSchema.methods.sayHello = function() {
+  return 'Hello ' + this.Name;
+}
+
+animalSchema.methods.linkName = function() {
+  if (this.status==='orphan') {
+  return 'adopt';
+  } else if (this.status==='adopted') {
+  return 'abandon';
+  }
+}
+
 var Animal = mongoose.model('Animal', animalSchema)
 
 module.exports = Animal;
