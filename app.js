@@ -12,8 +12,7 @@ var router = express.Router();
 
 var Animal = require('./models/animals')
 
-var moongoose = require('mongoose');
-moongoose.connect('mongodb://localhost/animalshelter');
+mongoose.connect('mongodb://localhost/animalshelter');
 
 //middleware to refresh page on reload
 app.use(function noCacheForRoot(req, res, next) {
